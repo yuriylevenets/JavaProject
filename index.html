@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Клікер Гра</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 Клікер Гра</h1>
+        
+        <div class="score-display" id="score">0</div>
+        
+        <button class="click-button" id="clickButton">
+            КЛІК!
+        </button>
+
+        <div class="stats">
+            <div class="stat-item">
+                <span class="stat-label">Кліків за секунду:</span>
+                <span class="stat-value" id="cps">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Всього кліків:</span>
+                <span class="stat-value" id="totalClicks">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Очки за клік:</span>
+                <span class="stat-value" id="clickPower">1</span>
+            </div>
+        </div>
+
+        <div class="upgrades">
+            <h2 class="upgrade-title">⬆️ Покращення</h2>
+            
+            <div class="upgrade-item">
+                <div class="upgrade-info">
+                    <div class="upgrade-name">Подвійний клік</div>
+                    <div class="upgrade-description">+1 очко за клік (Власність: <span id="upgrade1Count">0</span>)</div>
+                </div>
+                <button class="upgrade-button" id="upgrade1">
+                    Купити (10)
+                </button>
+            </div>
+
+            <div class="upgrade-item">
+                <div class="upgrade-info">
+                    <div class="upgrade-name">Потрійний клік</div>
+                    <div class="upgrade-description">+5 очок за клік (Власність: <span id="upgrade2Count">0</span>)</div>
+                </div>
+                <button class="upgrade-button" id="upgrade2">
+                    Купити (50)
+                </button>
+            </div>
+
+            <div class="upgrade-item">
+                <div class="upgrade-info">
+                    <div class="upgrade-name">Мега клік</div>
+                    <div class="upgrade-description">+10 очок за клік (Власність: <span id="upgrade3Count">0</span>)</div>
+                </div>
+                <button class="upgrade-button" id="upgrade3">
+                    Купити (200)
+                </button>
+            </div>
+
+            <div class="upgrade-item">
+                <div class="upgrade-info">
+                    <div class="upgrade-name">Автоклікер</div>
+                    <div class="upgrade-description">+1 очко/сек (Власність: <span id="upgrade4Count">0</span>)</div>
+                </div>
+                <button class="upgrade-button" id="upgrade4">
+                    Купити (100)
+                </button>
+            </div>
+        </div>
+
+        <button class="reset-button" id="resetButton">🔄 Скинути гру</button>
+    </div>
+
+    <!-- Таблиця лідерів -->
+    <div class="leaderboard-container">
+        <h2 class="leaderboard-title">🏆 Таблиця лідерів</h2>
+        <div class="leaderboard-form">
+            <input type="text" id="playerName" placeholder="Введіть ваше ім'я" maxlength="20">
+            <button id="saveScore" class="save-score-btn">Зберегти результат</button>
+        </div>
+        <div id="leaderboardList" class="leaderboard-list">
+            <!-- Лідери будуть додані через JavaScript -->
+        </div>
+    </div>
+
+    <!-- Аудіо елементи для звуків -->
+    <audio id="clickSound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBzGH0fPTgjMGHm7A7+OZTRQKS6Lh8bllHAU6jtrzxnYpBSh+zPLaizsIGGS56ueYSgwNVKzn77BfGQc9kun0wW4eBCuBzfPahjoIG2m+7eKVSAwOWK/o8KthGwY8lNz0xXUpBCp+zvPaiTsIG2i96uSZSgwOV6/n8KxfGgc8lN3zw3QoBCh9zPPaizsIGWi86eGYSQsNV6/o8a1gGgc9ld30wXMnAyd8y/Pbi0AIGWe76OKXSQ0OVq7n8axgGgc+lNzzwnMnAyZ7yvLZi0EIG2m96eKYSQ0OVq7n8qxfGgc+k9zzwnQoAyZ8yvPaiTwIGWi76+KXSQwOVq7n8axgGgc+lN30wnMnAyZ8yvPaijsIGWi86+GZSQwOVq7o8axgGQc+lN30wXMnAyZ7yfPaijwIGWe76+GYSQwNV67n8axfGgc+k930wXInAyZ7yfLZi0EIG2i76uKYSQwOVq7n8KxgGgc+lNzzwXMnAyd8yvPaizwHGGe76+KYSQwNVq3n8axfGgc/lNzzwXInAyZ7yfPaizwHGWi76uCZSQwNV67n8axfGgc+k9zzwXInBCZ7yfPaijsIG2i86+GZSQsOV67n8K1gGgc9lNzywHMnAyZ8yvLaijwHGmi76uKZSQwNV63o8axfGgc+lNvzwnInAyZ7yfPaijsIGmi76+GZSQsOVq7n8KxgGgc+lNzzwXInAyV8yvPaijwIG2i76uGYSQwNVq7n8axfGgc+lNzzwXInAyZ8yvPaijwHGWi86uKZSQsOVq7o8KtgGgc+lNvzwXMnAyZ7yfPaizwIG2i76uCZSQwNV67n8axfGgc+k9v0wXInAyZ7yfPaijsIGmi76+KZSQsOVq7n8KtgGgc+lNvzwXMnAyZ7yfPaijsIG2m76+CZSQsOVq7n8axfGgc+k9vzwXInAyZ7yfLZizwIG2i76+GZSQsOVq7n8KtgGgc+lNvzwXMnAyZ7yfPaijsIG2m86+CZSQsOVq7n8KtgGgc+lNzywHInAyZ7yfPaijwIG2i76+GZSQsOVq7n8KtgGgc+lNvzwHInAyZ8yvLaizwIG2i76+GZSQsOVq7n8KtfGgc+lNvzwHInAyZ8yvPaijsIG2m76+GZSQsOVq7n8KtfGgc+lNvzwHInAyZ8yvPaijsIG2m76+GZSQsOVq7n8KtfGgc+lNvzwHMnAyZ8yvLaijwIG2i76+GZSQsOVq7n8KtfGgc+lNvzwHInAyZ8yvPaijsIG2m86+CZSQsOVq7n8KtfGgc+lNvzwHMnAyZ8yvPaijsIG2m86+CZSQsOVq7n8KtfGgc+lNvzwHMnAyZ8yvPaijwIG2i76+GZSQsOVq7n8KtfGgc+lNvzwHMnAyZ8yvPaijwIG2i76+GZSQsOVq7n8KtfGgc+lNzzwHMnAyZ8yvPaijwIG2i76+GZSQsOVq7n8KtfGgc+lNzzwHMnAyZ8yvPaijwIG2i76+GZSQsOVq7n8KtfGgc+lNzzwHMnAyZ8yvPaijsIG2m86+CZSQsOVq7n8KtfGgc+lNzzwHMnAyZ8yvPaijsIG2m86+CZSQsOVq7n8KtfGgc+lNzzwHInAyZ8yvPaijwIG2i76+GZSQsOVq7n8KtfGgc+lNzzwHMnAyZ8yvPaijwIG2i76+GZSQsOVq7n8KtfGgc+lNzzwHMnAyZ8yvPaijsIG2m86+CZSQsOVq7n8KtfGgc+lNzzwHMnAyZ8yvPaijsIG2m86+CZSQsOVq7n8KtfGgc+lNzzwHMnAyZ8yvPaijwIG2i76+GZSQsOVq7n8KtfGgc+lNzzwHMnAyZ8yvPaijsIG2m86+CZSQsOVq7n8KtfGgc+lNzzwHMnAyZ8yvPaijwIG2i76+GZSQsOVq7n8KtfGgc+lNzzwHMn" type="audio/wav">
+    </audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
