@@ -18,6 +18,7 @@ body {
     overflow-x: hidden;
 }
 
+/* Анімований фон з частинками */
 body::before {
     content: '';
     position: fixed;
@@ -371,6 +372,7 @@ h1 {
     }
 }
 
+/* Таблиця лідерів */
 .leaderboard-container {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
